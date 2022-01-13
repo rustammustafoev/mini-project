@@ -5,15 +5,20 @@ class Driver(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=13)
-    car_number = models.CharField(max_length=13, null=True)
     car_type = models.CharField(max_length=25, null=True)
     joined = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return f'{self.first_name}: {self.car_type}'
 
 
 class Client(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=13)
+
+    def __str__(self):
+        return f'Client: {self.first_name}'
 
 
 class Order(models.Model):
@@ -30,3 +35,6 @@ class Order(models.Model):
 
     class Meta:
         ordering = ['order_start_time']
+
+    def __str__(self):
+        return f'{self.client.first_name} order to {self.driver.first_name}'
