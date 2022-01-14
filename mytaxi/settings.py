@@ -79,9 +79,9 @@ WSGI_APPLICATION = 'mytaxi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'orderdb',
-        'USER': 'root',
-        'PASSWORD': 'russdevc?!2001',
+        'NAME': '',  # database name
+        'USER': '',   # mysql username
+        'PASSWORD': '',   # mysql password
         'HOST': 'localhost',
         'PORT': '3306',
     }
