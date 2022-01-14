@@ -1,9 +1,11 @@
+import django_filters.rest_framework
 from django.shortcuts import render
 from .serializers import DriverSerializer, ClientSerializer, OrderSerializer
 from .models import Driver, Client, Order
-from rest_framework import viewsets, status
+from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 
 # DRIVER
 class DriverList(APIView):
@@ -55,8 +57,8 @@ class OrderList(APIView):
 
 # ORDER UPDATE
 class OrderUpdate(APIView):
-    def put(self, request, pk):
-        order = Order.objects.get(id=pk)
+    def put(self, request, order_id):
+        order = Order.objects.get(id=order_id)
         pre_status = order.order_status
         serializer = OrderSerializer(order, data=request.data)
         if serializer.is_valid():
@@ -68,13 +70,23 @@ class OrderUpdate(APIView):
 
 
 # LIST CLIENT'S ORDERS
-class OrderListByClient(APIView):
-    def get(self, request, client_id):
-        from_ = request.GET.get('from')
-        to_ = request.GET.get('to')
+class ClientOrderList(generics.ListAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        from_ = self.request.query_params.get('from')
+        to_ = self.request.query_params.get('to')
         if from_ and to_:
-            orders = Order.objects.filter(client=client_id, joined__range=[from_, to_])
-        else:
-            orders = Order.objects.filter(client=client_id)
-        serializer = OrderSerializer(orders, many=True)
-        return Response(serializer.data)
+            return queryset.filter(client_id=self.kwargs['client_id'], order_start_time__range=[from_, to_])
+        return queryset.filter(client_id=self.kwargs['client_id'])
+
+
+
+
+
+
+
+
+

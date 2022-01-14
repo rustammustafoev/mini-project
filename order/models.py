@@ -34,7 +34,7 @@ class Order(models.Model):
     order_start_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['order_start_time']
+        ordering = ['-order_start_time']
 
     def __str__(self):
         return f'{self.client.first_name} order to {self.driver.first_name}'

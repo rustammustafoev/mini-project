@@ -15,5 +15,5 @@ class ClientAdmin(admin.ModelAdmin):
 
 @register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['order_status', 'order_start_time']
+    list_display = ['id', 'order_status', 'order_start_time']
 
